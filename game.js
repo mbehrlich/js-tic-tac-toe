@@ -6,17 +6,18 @@ const reader = readline.createInterface({
 
 const Board = require('./board');
 const Player = require('./player');
+const AiPlayer = require('./aiplayer');
 
 class Game {
-  constructor(player1, player2) {
-    this.board = new Board();
+  constructor(player1, player2, board) {
+    this.board = board; //new Board();
     this.player1 = player1;
     this.player2 = player2;
     this.currentPlayer = player1;
   }
 
   run(completion) {
-    this.board.printBoard();
+    // this.board.printBoard();
     this.currentPlayer.getMove((pos) => {
       if (this.board.placeMark(this.currentPlayer.mark, pos)) {
         if (this.board.isWon(this.currentPlayer.mark) || this.board.isOver()) {
@@ -39,9 +40,11 @@ class Game {
 
 }
 
-let p1 = new Player('matt', 'X', reader);
-let p2 = new Player('rush', 'O', reader);
-let game = new Game(p1, p2);
+let board = new Board();
+let p1 = new Player('matt', 'X', board, reader);
+let p2 = new AiPlayer('rush', 'O', board);
+// let p2 = new Player('rush', 'O', board, reader);
+let game = new Game(p1, p2, board);
 game.run( () => {
   console.log("GAME OVER");
   reader.close();

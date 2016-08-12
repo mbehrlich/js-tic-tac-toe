@@ -5,13 +5,15 @@
 // });
 
 class Player {
-  constructor(name, mark, reader) {
+  constructor(name, mark, board, reader) {
     this.name = name;
     this.mark = mark;
+    this.board = board;
     this.reader = reader;
   }
 
   getMove(callback) {
+    this.board.printBoard();
     this.reader.question(`${this.name}, please enter the row and column you wish to mark, separated by a comma`, (answer) => {
       let pos = this.parseAnswer(answer);
       callback(pos);
