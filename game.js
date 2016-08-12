@@ -20,6 +20,7 @@ class Game {
     this.currentPlayer.getMove((pos) => {
       if (this.board.placeMark(this.currentPlayer.mark, pos)) {
         if (this.board.isWon(this.currentPlayer.mark) || this.board.isOver()) {
+          this.board.printBoard();
           completion();
         } else {
         this.switchPlayers();

@@ -8,6 +8,8 @@ class Board{
     let x = pos[0], y = pos[1];
     if (x < 0 || x > 2 || y < 0 || y > 2){
       return false;
+    } else if (isNaN(pos[0]) || isNaN(pos[1])) {
+      return false;
     } else {
       return !this.isOccupied(pos);
     }
@@ -92,7 +94,7 @@ class Board{
   }
 
   isWon(mark){
-    if(this.diagonalWins(mark) || this.horizontalWins(mark) || this.diagonalWins(mark)){
+    if(this.verticalWins(mark) || this.horizontalWins(mark) || this.diagonalWins(mark)){
       return true;
     }
     return false;
@@ -115,7 +117,7 @@ Array.prototype.transpose = function(){
 function checkVeriticalWins(board, mark){
   let win = false;
   board.forEach((row) => {
-    if(row.every((el) => el === mark && el !== undefined )) {
+    if(row.every((el) => el === mark )) {
       win = true;
     }
   });
