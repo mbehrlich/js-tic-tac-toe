@@ -1,3 +1,5 @@
+const Board = require('./board');
+
 class AiPlayer {
   constructor(name, mark, board) {
     this.name = name;
@@ -6,23 +8,54 @@ class AiPlayer {
   }
 
   getMove(callback) {
-    let x = Math.floor(Math.random() * 3);
-    let y = Math.floor(Math.random() * 3);
-    let pos = [x,y];
+    // let x = Math.floor(Math.random() * 3);
+    // let y = Math.floor(Math.random() * 3);
+    // let pos = [x,y];
+    let pos = this.calculateMove();
     callback(pos);
   }
-  // getMove(callback) {
-  //   this.reader.question(`${this.name}, please enter the row and column you wish to mark, separated by a comma`, (answer) => {
-  //     let pos = this.parseAnswer(answer);
-  //     callback(pos);
-  //   });
-  // }
-  //
-  // parseAnswer(answer) {
-  //   return answer.split(',').map( (el) => {
-  //     return parseInt(el);
-  //   });
-  // }
+
+  calculateMove(){
+    let possMoves = this.possibleMoves();
+    let winningPos = [];
+
+    possMoves.forEach(pos=>{
+      let clonedB = new Board(this.cloneBoard());
+      clonedB.placeMark(this.mark, pos);
+      if (clonedB.isWon(this.mark)) {
+        winningPos.push(pos);
+      }
+    });
+
+    if (winningPos.length === 0) {
+      return possMoves[Math.floor(Math.random() * possMoves.length)];
+    }else {
+      return winningPos[0];
+    }
+  }
+
+  cloneBoard(){
+    let cloned = [];
+    this.board.grid.forEach(row => {
+      cloned.push(row.slice(0));
+    });
+    return cloned;
+  }
+
+  possibleMoves(){
+    let result = [];
+    this.board.grid.forEach((row, rowID) => {
+      row.forEach((el, colID) => {
+        if (el === " "){
+          result.push([rowID, colID]);
+        }
+      });
+    });
+    return result;
+  }
+
+
+
 }
 
 module.exports = AiPlayer;

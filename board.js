@@ -1,7 +1,6 @@
 class Board{
-  constructor(){
-    // this.grid = [new Array(3), new Array(3), new Array(3)];
-    this.grid = [ [" ", " ", " "], [" ", " ", " "], [" ", " ", " "]];
+  constructor( grid = [ [" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]){
+    this.grid = grid;
   }
 
   isValidMove(pos){
