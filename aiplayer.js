@@ -19,6 +19,9 @@ class AiPlayer {
     let possMoves = this.possibleMoves();
     let winningPos = [];
     let losingPos = [];
+    let center = [];
+    let corners = [];
+    let cornerCheck = [[0, 0], [2, 2], [2, 0], [0, 2]];
 
     possMoves.forEach(pos=>{
       let oppMark = ( this.mark === 'X' ? 'O' : 'X');
@@ -32,6 +35,15 @@ class AiPlayer {
       if (clonedB2.isWon(oppMark)) {
         losingPos.push(pos);
       }
+      if (arrayEquals(pos, [1, 1])) {
+        center = pos;
+      } else {
+        cornerCheck.forEach( (corner) => {
+          if (arrayEquals(corner, pos)) {
+            corners.push(pos);
+          }
+        });
+      }
     });
 
     if (winningPos.length !== 0) {
@@ -39,7 +51,13 @@ class AiPlayer {
     } else if (losingPos.length !== 0) {
       return losingPos[0];
     } else {
-      return possMoves[Math.floor(Math.random() * possMoves.length)];
+      if (center.length !== 0) {
+        return center;
+      } else if (corners.length !== 0){
+        return corners[Math.floor(Math.random() * corners.length)];
+      } else {
+        return possMoves[Math.floor(Math.random() * possMoves.length)];
+      }
     }
   }
 
@@ -63,8 +81,10 @@ class AiPlayer {
     return result;
   }
 
+}
 
-
+function arrayEquals(arr1, arr2) {
+  return arr1[0] === arr2[0] && arr1[1] === arr2[1];
 }
 
 module.exports = AiPlayer;
